@@ -10,29 +10,49 @@ def print_board(board):
 		print(' '.join([elem for elem in row]))
 	print('')
 
-def placeboat(inrow, incol, board, boatlength, marker):
-	#attempt horizontal placement
-	if incol > (boardsize - boatlength):
-		print(f'Cant place boat horizontally at {inrow}, {incol}')
+def print_bool(alwaysPrint, boolInput)
+	if boolInput:
+		print(alwaysPrint + ' true')
 	else:
-		print(f'Attempting to place boat horizontally at {inrow}, {incol}')
-		ableToPlace = True
-		for i in range (incol, incol + boatlength):
-			if board[inrow][i] != emptycell:
-				ableToPlace = False
-		if ableToPlace:
-			print(f'Placing boat horizontally at {inrow}, {incol}')
-			for i in range (incol, incol + boatlength):
-				board[inrow][i] = marker
-		else:
-			print(f'Cannot place boat horizontally at {inrow}, {incol}')
-		print_board(board)
+		print(alwaysPrint + ' false')
 
-	#attempt vertical placement
-	#if inrow > (boardsize - boatlength):
-	#	print(f'Cant place boat vertically at {inrow}, {incol}')
-	#else:
-	#	print(f'Will attempt to place boat vertically at {inrow}, {incol}')
+def placeboat(board, inrow, incol, boatlength, direction, marker):
+	returnVal = False
+	if direction == 'horizontal':
+		if incol <= (boardsize - boatlength):
+			#print(f'Attempting to place boat horizontally at {inrow}, {incol}')
+			ableToPlace = True
+			for i in range (incol, incol + boatlength):
+				if board[inrow][i] != emptycell:
+					ableToPlace = False
+			if ableToPlace:
+				print(f'Placing boat horizontally at {inrow}, {incol}')
+				for i in range (incol, incol + boatlength):
+					board[inrow][i] = marker
+				returnVal = True
+				print_board(board)
+			else:
+				print(f'Cannot place boat horizontally at {inrow}, {incol}')
+		else:
+			print(f'Cant place boat horizontally at {inrow}, {incol}')
+	else:
+		if inrow <= (boardsize - boatlength):
+			#print(f'Attempting to place boat vertically {inrow}, {incol}')
+			ableToPlace = True
+			for i in range (inrow, inrow + boatlength):
+				if board[i][incol] != emptycell:
+					ableToPlace = False
+			if ableToPlace:
+				print(f'Placing boat vertically at {inrow}, {incol}')
+				for i in range (inrow, inrow + boatlength):
+					board[i][incol] = marker
+				returnVal = True
+				print_board(board)
+			else:
+				print(f'Cannot place boat vertically at {inrow}, {incol}')
+		else:
+			print(f'Cant place boat vertically at {inrow}, {incol}')
+	return returnVal
 
 def testing():
 	# indices start at 0, and not just because RANGE (above) starts at zero.
@@ -40,18 +60,16 @@ def testing():
 	#theBoard[2][3] = 'B'
 	#theBoard[3][2] = 'C'
 	#print_board(theBoard)
-	#placeboat(0, 0, theBoard, 3, 'X')  #OK
-	#placeboat(1, 1, theBoard, 3, 'X')  #OK
-	#placeboat(0, 2, theBoard, 3, 'X')  #OK
-	#placeboat(1, 0, theBoard, 3, 'X')  #OK
-	pass
+	#placeboat(theBoard, 0, 0, 3, 'horizontal', 'X')
+	print_bool('able to place at 1,1', placeboat(theBoard, 1, 1, 3, 'horizontal', 'X'))
+	print_bool('able to place at 1,3', placeboat(theBoard, 1, 1, 3, 'horizontal', 'X'))
 
 def main():
-	#testing()
+	testing()
 
-	for i in range(boardsize):
-		for j in range(boardsize):
-			placeboat(i, j, theBoard, 3, 'X')
+	#for i in range(boardsize):
+	#	for j in range(boardsize):
+	#		placeboat(i, j, theBoard, 3, 'X')
 
 # need this to make this run from command line
 if __name__ == '__main__':
